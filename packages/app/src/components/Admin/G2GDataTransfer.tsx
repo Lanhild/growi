@@ -12,7 +12,7 @@ import { useAdminSocket } from '~/stores/socket-io';
 
 import CustomCopyToClipBoard from '../Common/CustomCopyToClipBoard';
 
-// import { FileUploadSettingMolecule } from './App/FileUploadSetting';
+import { FileUploadSettingMolecule } from './App/FileUploadSetting';
 import G2GDataTransferExportForm from './G2GDataTransferExportForm';
 import G2GDataTransferStatusIcon from './G2GDataTransferStatusIcon';
 
@@ -36,17 +36,18 @@ const G2GDataTransfer = (): JSX.Element => {
   });
 
   // File upload settings
-  // const [fileUploadType, setFileUploadType] = useState('aws');
-  // const [s3ReferenceFileWithRelayMode, setS3ReferenceFileWithRelayMode] = useState(false);
-  // const [s3Region, setS3Region] = useState('');
-  // const [s3CustomEndpoint, setS3CustomEndpoint] = useState('');
-  // const [s3Bucket, setS3Bucket] = useState('');
-  // const [s3AccessKeyId, setS3AccessKeyId] = useState('');
-  // const [s3SecretAccessKey, setS3SecretAccessKey] = useState('');
-  // const [gcsReferenceFileWithRelayMode, setGcsReferenceFileWithRelayMode] = useState(false);
-  // const [gcsApiKeyJsonPath, setGcsApiKeyJsonPath] = useState('');
-  // const [gcsBucket, setGcsBucket] = useState('');
-  // const [gcsUploadNamespace, setGcsUploadNamespace] = useState('');
+  const [fileUploadType, setFileUploadType] = useState('aws');
+  const [isUseDestGrowiFileUploadSettings, setIsUseDestGrowiFileUploadSettings] = useState(true);
+  const [s3ReferenceFileWithRelayMode, setS3ReferenceFileWithRelayMode] = useState(false);
+  const [s3Region, setS3Region] = useState('');
+  const [s3CustomEndpoint, setS3CustomEndpoint] = useState('');
+  const [s3Bucket, setS3Bucket] = useState('');
+  const [s3AccessKeyId, setS3AccessKeyId] = useState('');
+  const [s3SecretAccessKey, setS3SecretAccessKey] = useState('');
+  const [gcsReferenceFileWithRelayMode, setGcsReferenceFileWithRelayMode] = useState(false);
+  const [gcsApiKeyJsonPath, setGcsApiKeyJsonPath] = useState('');
+  const [gcsBucket, setGcsBucket] = useState('');
+  const [gcsUploadNamespace, setGcsUploadNamespace] = useState('');
 
   const updateSelectedCollections = (newSelectedCollections: Set<string>) => {
     setSelectedCollections(newSelectedCollections);
@@ -124,51 +125,55 @@ const G2GDataTransfer = (): JSX.Element => {
   }, [setTransferring, startTransferKey, selectedCollections, optionsMap]);
 
   // File upload
-  // const onChangeFileUploadTypeHandler = useCallback((e: ChangeEvent, type: string) => {
-  //   setFileUploadType(type);
-  // }, []);
+  const onChangeFileUploadTypeHandler = useCallback((e: ChangeEvent, type: string) => {
+    setFileUploadType(type);
+  }, []);
+
+  const onChangeIsUseDestGrowiFileUploadSettings = useCallback((e: ChangeEvent) => {
+    setIsUseDestGrowiFileUploadSettings(prev => !prev);
+  }, []);
 
   // S3
-  // const onChangeS3ReferenceFileWithRelayModeHandler = useCallback((val: boolean) => {
-  //   setS3ReferenceFileWithRelayMode(val);
-  // }, []);
+  const onChangeS3ReferenceFileWithRelayModeHandler = useCallback((val: boolean) => {
+    setS3ReferenceFileWithRelayMode(val);
+  }, []);
 
-  // const onChangeS3RegionHandler = useCallback((val: string) => {
-  //   setS3Region(val);
-  // }, []);
+  const onChangeS3RegionHandler = useCallback((val: string) => {
+    setS3Region(val);
+  }, []);
 
-  // const onChangeS3CustomEndpointHandler = useCallback((val: string) => {
-  //   setS3CustomEndpoint(val);
-  // }, []);
+  const onChangeS3CustomEndpointHandler = useCallback((val: string) => {
+    setS3CustomEndpoint(val);
+  }, []);
 
-  // const onChangeS3BucketHandler = useCallback((val: string) => {
-  //   setS3Bucket(val);
-  // }, []);
+  const onChangeS3BucketHandler = useCallback((val: string) => {
+    setS3Bucket(val);
+  }, []);
 
-  // const onChangeS3AccessKeyIdHandler = useCallback((val: string) => {
-  //   setS3AccessKeyId(val);
-  // }, []);
+  const onChangeS3AccessKeyIdHandler = useCallback((val: string) => {
+    setS3AccessKeyId(val);
+  }, []);
 
-  // const onChangeS3SecretAccessKeyHandler = useCallback((val: string) => {
-  //   setS3SecretAccessKey(val);
-  // }, []);
+  const onChangeS3SecretAccessKeyHandler = useCallback((val: string) => {
+    setS3SecretAccessKey(val);
+  }, []);
 
-  // // GCS
-  // const onChangeGcsReferenceFileWithRelayModeHandler = useCallback((val: boolean) => {
-  //   setGcsReferenceFileWithRelayMode(val);
-  // }, []);
+  // GCS
+  const onChangeGcsReferenceFileWithRelayModeHandler = useCallback((val: boolean) => {
+    setGcsReferenceFileWithRelayMode(val);
+  }, []);
 
-  // const onChangeGcsApiKeyJsonPathHandler = useCallback((val: string) => {
-  //   setGcsApiKeyJsonPath(val);
-  // }, []);
+  const onChangeGcsApiKeyJsonPathHandler = useCallback((val: string) => {
+    setGcsApiKeyJsonPath(val);
+  }, []);
 
-  // const onChangeGcsBucketHandler = useCallback((val: string) => {
-  //   setGcsBucket(val);
-  // }, []);
+  const onChangeGcsBucketHandler = useCallback((val: string) => {
+    setGcsBucket(val);
+  }, []);
 
-  // const onChangeGcsUploadNamespaceHandler = useCallback((val: string) => {
-  //   setGcsUploadNamespace(val);
-  // }, []);
+  const onChangeGcsUploadNamespaceHandler = useCallback((val: string) => {
+    setGcsUploadNamespace(val);
+  }, []);
 
 
   useEffect(() => {
@@ -184,52 +189,8 @@ const G2GDataTransfer = (): JSX.Element => {
     <div data-testid="admin-export-archive-data">
       <h2 className="border-bottom">{t('admin:g2g_data_transfer.transfer_data_to_another_growi')}</h2>
 
-      <button type="button" className="btn btn-outline-secondary mt-4" disabled={isTransferring} onClick={() => setShowExportForm(!isShowExportForm)}>
-        {t('admin:g2g_data_transfer.advanced_options')}
-      </button>
-
-      {collections.length !== 0 && (
-        <div className={`${isShowExportForm ? '' : 'd-none'} px-3 pt-3`}>
-          {/* <h3 className='mb-1'>{t('admin:app_setting.file_upload')}</h3>
-          <FileUploadSettingMolecule
-            fileUploadType={fileUploadType}
-            isFixedFileUploadByEnvVar={false}
-            onChangeFileUploadType={onChangeFileUploadTypeHandler}
-            s3ReferenceFileWithRelayMode={s3ReferenceFileWithRelayMode}
-            s3Region={s3Region}
-            s3CustomEndpoint={s3CustomEndpoint}
-            s3Bucket={s3Bucket}
-            s3AccessKeyId={s3AccessKeyId}
-            s3SecretAccessKey={s3SecretAccessKey}
-            onChangeS3ReferenceFileWithRelayMode={onChangeS3ReferenceFileWithRelayModeHandler}
-            onChangeS3Region={onChangeS3RegionHandler}
-            onChangeS3CustomEndpoint={onChangeS3CustomEndpointHandler}
-            onChangeS3Bucket={onChangeS3BucketHandler}
-            onChangeS3AccessKeyId={onChangeS3AccessKeyIdHandler}
-            onChangeS3SecretAccessKey={onChangeS3SecretAccessKeyHandler}
-            gcsReferenceFileWithRelayMode={gcsReferenceFileWithRelayMode}
-            gcsUseOnlyEnvVars={false}
-            gcsApiKeyJsonPath={gcsApiKeyJsonPath}
-            gcsBucket={gcsBucket}
-            gcsUploadNamespace={gcsUploadNamespace}
-            onChangeGcsReferenceFileWithRelayMode={onChangeGcsReferenceFileWithRelayModeHandler}
-            onChangeGcsApiKeyJsonPath={onChangeGcsApiKeyJsonPathHandler}
-            onChangeGcsBucket={onChangeGcsBucketHandler}
-            onChangeGcsUploadNamespace={onChangeGcsUploadNamespaceHandler}
-          /> */}
-          <h3 className='mb-1'>{t('export_management.export_archive_data')}</h3>
-          <G2GDataTransferExportForm
-            allCollectionNames={collections}
-            selectedCollections={selectedCollections}
-            updateSelectedCollections={updateSelectedCollections}
-            optionsMap={optionsMap}
-            updateOptionsMap={updateOptionsMap}
-          />
-        </div>
-      )}
-
       <form onSubmit={startTransfer}>
-        <div className="form-group row mt-3">
+        <div className="form-group row mt-4">
           <div className="col-9">
             <input
               className="form-control"
@@ -253,6 +214,66 @@ const G2GDataTransfer = (): JSX.Element => {
           <div>
             <G2GDataTransferStatusIcon className='mr-2' status={g2gProgress.attachments} /> Attachments
           </div>
+        </div>
+      )}
+
+      <button type="button" className="btn btn-outline-secondary mt-1" disabled={isTransferring} onClick={() => setShowExportForm(!isShowExportForm)}>
+        {t('admin:g2g_data_transfer.advanced_options')}
+      </button>
+
+      {collections.length !== 0 && (
+        <div className={`${isShowExportForm ? '' : 'd-none'} border rounded mt-3 ml-3 px-3 pt-3`}>
+          <h3 className='mb-1'>{t('admin:app_setting.file_upload_settings')}</h3>
+          <div className='row'>
+            <div className="custom-control custom-checkbox custom-checkbox-primary col-md-6 offset-md-4 p-2 mb-2">
+              <input
+                className="custom-control-input"
+                id="isUseDestGrowiFileUploadSettings"
+                type="checkbox"
+                checked={isUseDestGrowiFileUploadSettings}
+                onChange={onChangeIsUseDestGrowiFileUploadSettings}
+              />
+              <label className="custom-control-label" htmlFor="isUseDestGrowiFileUploadSettings">
+              移行先 GROWI の設定を使用する
+              </label>
+            </div>
+          </div>
+          {!isUseDestGrowiFileUploadSettings && (
+            <FileUploadSettingMolecule
+              fileUploadType={fileUploadType}
+              isFixedFileUploadByEnvVar={false}
+              onChangeFileUploadType={onChangeFileUploadTypeHandler}
+              s3ReferenceFileWithRelayMode={s3ReferenceFileWithRelayMode}
+              s3Region={s3Region}
+              s3CustomEndpoint={s3CustomEndpoint}
+              s3Bucket={s3Bucket}
+              s3AccessKeyId={s3AccessKeyId}
+              s3SecretAccessKey={s3SecretAccessKey}
+              onChangeS3ReferenceFileWithRelayMode={onChangeS3ReferenceFileWithRelayModeHandler}
+              onChangeS3Region={onChangeS3RegionHandler}
+              onChangeS3CustomEndpoint={onChangeS3CustomEndpointHandler}
+              onChangeS3Bucket={onChangeS3BucketHandler}
+              onChangeS3AccessKeyId={onChangeS3AccessKeyIdHandler}
+              onChangeS3SecretAccessKey={onChangeS3SecretAccessKeyHandler}
+              gcsReferenceFileWithRelayMode={gcsReferenceFileWithRelayMode}
+              gcsUseOnlyEnvVars={false}
+              gcsApiKeyJsonPath={gcsApiKeyJsonPath}
+              gcsBucket={gcsBucket}
+              gcsUploadNamespace={gcsUploadNamespace}
+              onChangeGcsReferenceFileWithRelayMode={onChangeGcsReferenceFileWithRelayModeHandler}
+              onChangeGcsApiKeyJsonPath={onChangeGcsApiKeyJsonPathHandler}
+              onChangeGcsBucket={onChangeGcsBucketHandler}
+              onChangeGcsUploadNamespace={onChangeGcsUploadNamespaceHandler}
+            />
+          )}
+          <h3 className='mb-1'>{t('export_management.export_archive_data')}</h3>
+          <G2GDataTransferExportForm
+            allCollectionNames={collections}
+            selectedCollections={selectedCollections}
+            updateSelectedCollections={updateSelectedCollections}
+            optionsMap={optionsMap}
+            updateOptionsMap={updateOptionsMap}
+          />
         </div>
       )}
 
