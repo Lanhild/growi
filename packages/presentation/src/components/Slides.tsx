@@ -27,6 +27,7 @@ const marpSlide = new Marp({
   math: false,
 });
 
+
 // TODO: to change better slide style
 // https://redmine.weseek.co.jp/issues/125680
 const marp = new Marp({
